@@ -1,46 +1,46 @@
 # Django
 from django.shortcuts import render
-from django.contrib.auth import logout
-from django.template import RequestContext, loader
-from django.contrib.auth import authenticate, login
+# from django.contrib.auth import logout
+# from django.template import RequestContext, loader
+# from django.contrib.auth import authenticate, login
 from django.http import HttpResponse, HttpResponseRedirect
-from django.conf import settings
+# from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.models import User
-from django.contrib.auth.decorators import login_required
-from django.views.decorators.csrf import csrf_exempt
+# from django.contrib.auth.models import User
+# from django.contrib.auth.decorators import login_required
+# from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 
 # Django REST Framework
 from rest_framework import viewsets, mixins
 
 # Scripts
-from scripts.steam import gamespulling, steamidpulling
-from scripts.github import *
-from scripts.tumblr import TumblrOauthClient
-from scripts.twilioapi import *
-from scripts.instagram import *
-from scripts.scraper import steamDiscounts
-from scripts.quandl import *
-from scripts.twitter import TwitterOauthClient
-from scripts.nytimes import *
-from scripts.meetup import *
-from scripts.linkedin import LinkedinOauthClient
-from scripts.yelp import requestData
-from scripts.facebook import *
-from scripts.googlePlus import *
-from scripts.dropbox import *
-from scripts.foursquare import *
+from .scripts.steam import gamespulling, steamidpulling
+from .scripts.github import *
+from .scripts.tumblr import TumblrOauthClient
+from .scripts.twilioapi import *
+from .scripts.instagram import *
+from .scripts.scraper import steamDiscounts
+from .scripts.quandl import *
+from .scripts.twitter import TwitterOauthClient
+from .scripts.nytimes import *
+from .scripts.meetup import *
+from .scripts.linkedin import LinkedinOauthClient
+from .scripts.yelp import requestData
+from .scripts.facebook import *
+from .scripts.googlePlus import *
+from .scripts.dropbox import *
+from .scripts.foursquare import *
 
 # Python
-import oauth2 as oauth
-import simplejson as json
+# import oauth2 as oauth
+import json
 import requests
 
 # Models
-from hackathon.models import *
-from hackathon.serializers import SnippetSerializer
-from hackathon.forms import UserForm
+from .models import *
+from .serializers import SnippetSerializer
+from .forms import UserForm
 
 
 profile_track = None
@@ -55,7 +55,7 @@ getDropbox = DropboxOauthClient(settings.DROPBOX_APP_ID, settings.DROPBOX_APP_SE
 getFoursquare = FoursquareOauthClient(settings.FOURSQUARE_APP_ID, settings.FOURSQUARE_APP_SECRET)
 
 def index(request):
-    print "index: " + str(request.user)
+    print( "index: " + str(request.user))
 
     if not request.user.is_active:
         if request.GET.items():
@@ -63,7 +63,7 @@ def index(request):
                 code = request.GET['code']
                 getGithub.get_access_token(code)
                 getGithub.getUserInfo()
-                print getGithub.access_token
+                print(getGithub.access_token)
                 try:
                     user = User.objects.get(username = getGithub.username + '_github')
                 except User.DoesNotExist:
@@ -186,7 +186,7 @@ def index(request):
                     new_user.save()
 
                     try:
-                        profle = GoogleProfile.objects.get(user = new_user.id)
+                        profile = GoogleProfile.objects.get(user = new_user.id)
                         profile.access_token = getGoogle.access_token
                     except:
                         profile = GoogleProfile()
@@ -435,7 +435,7 @@ def meetupUser(request):
 def quandlDowJones(request):
     '''Returns JSON response about the latest dowjones index.'''
     dowjonesdata = fetchData(settings.QUANDLAPIKEY, 'https://www.quandl.com/api/v1/datasets/BCB/UDJIAD1.json?')
-    print dowjonesdata
+    print(dowjonesdata)
     return JsonResponse({'data': dowjonesdata})
 
 def quandlSnp500(request):
@@ -532,7 +532,7 @@ def githubTopRepositories(request):
         list = getTopContributedRepositories(user, repositories, settings.GITHUB_CLIENT_ID, settings.GITHUB_CLIENT_SECRET)
         filtered = filterCommits(list)
         parsedData['committed'] = filtered
-        print parsedData
+        print(parsedData)
     return render(request, 'hackathon/githubTopRepositories.html', {'data': parsedData})
 
 def githubResume(request):
@@ -582,7 +582,7 @@ def tumblr(request):
 ####################
 
 def instagram(request):
-    print getInstagram.is_authorized
+    print(getInstagram.is_authorized)
 
     if getInstagram.is_authorized:
         if request.method == 'GET':
@@ -616,7 +616,7 @@ def instagramUserMedia(request):
     return JsonResponse({'data': parsedData })
 
 def instagramMediaByLocation(request):
-    print request.user
+    print(request.user)
     if request.method == 'GET':
         if request.GET.items():
             #check if user has a User profile
@@ -660,7 +660,7 @@ def twitter(request):
     return render(request, 'hackathon/twitter.html', context)
 
 def twitterTweets(request):
-    print getTwitter.is_authorized
+    print(getTwitter.is_authorized)
     if getTwitter.is_authorized:
         if request.method == 'GET':
             if request.GET.items():
@@ -741,7 +741,7 @@ def register(request):
             registered = True
             return HttpResponseRedirect('/hackathon/login/')
         else:
-            print user_form.errors
+            print(user_form.errors)
     else:
         user_form = UserForm()
 
@@ -764,7 +764,7 @@ def user_login(request):
             else:
                 return HttpResponse("Your Django Hackathon account is disabled.")
         else:
-            print "Invalid login details: {0}, {1}".format(username, password)
+            print("Invalid login details: {0}, {1}".format(username, password))
             return HttpResponse("Invalid login details supplied.")
 
     else:

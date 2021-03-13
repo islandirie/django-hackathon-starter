@@ -5,7 +5,7 @@ with Github data and returning the responses as JSON.
 
 import requests
 import simplejson as json
-import urllib, urlparse
+from urllib.parse import urlparse
 
 ########################
 # GITHUB API CONSTANTS #
@@ -134,7 +134,7 @@ def getUserData(user, clientID, clientSecret):
                     - Number of users being followed
     '''
     url = API_BASE_URL + user +  '?' + clientID + '&' + clientSecret
-    print url
+    print(url)
     req = requests.get(url)
     jsonList = []
     jsonList.append(json.loads(req.content))

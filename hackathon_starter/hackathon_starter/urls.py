@@ -1,10 +1,8 @@
-from django.conf.urls import patterns, include, url
+from django.urls import path, include
 from django.contrib import admin
-from hackathon import views
 
-urlpatterns = patterns('',
-    url(r'^$', views.index, name='index'),
-    url(r'^hackathon/', include('hackathon.urls')),
-    url(r'^admin/', include(admin.site.urls)),
-    # url(r'^openid/(.*)', SessionConsumer()),
-)
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', include('main.urls')),
+    path('hackathon/', include('hackathon.urls')),
+]

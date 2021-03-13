@@ -2,7 +2,7 @@
 
 import simplejson as json
 import requests
-import urlparse, urllib
+from urllib.parse import urlparse
 
 AUTHORIZATION_URL = 'https://www.linkedin.com/uas/oauth2/authorization'
 ACCESS_TOKEN_URL = 'https://www.linkedin.com/uas/oauth2/accessToken'
@@ -58,5 +58,5 @@ class LinkedinOauthClient(object):
             raise Exception('Invalid response %s' %req.status_code)
 
         self.user_id = content['id']
-        print content
+        print (content)
         return content

@@ -4,11 +4,9 @@ with Instagram data and returning the responses as JSON.
 '''
 
 import requests
-import urllib
-import urllib2
+import urllib.request as urllib2
 import json
 import simplejson as json2
-import googlemaps
 from django.conf import settings
 from datetime import datetime
 

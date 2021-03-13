@@ -9,8 +9,10 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 """
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-import os
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+import os, sys
+currdir = os.path.dirname(os.path.realpath(__file__))
+BASE_DIR = os.path.dirname(currdir)
+sys.path.append(BASE_DIR)
 
 
 # Quick-start development settings - unsuitable for production
@@ -21,9 +23,9 @@ SECRET_KEY = 'keuhh=0*%do-ayvy*m2k=vss*$7)j8q!@u0+d^na7mi2(^!l!d'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
 TEMPLATE_DEBUG = True
 
+# If Debug set to false, add hosts if blank ('localhost', '127.0.0.1')
 ALLOWED_HOSTS = []
 
 
@@ -38,23 +40,37 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'hackathon',
     'bootstrapform',
-    # 'django_openid',
     'django_nose',
     'rest_framework',
     'corsheaders',
+    'main'
 )
 
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     #'django_openid_consumer.SessionConsumer',
 )
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
 
 ROOT_URLCONF = 'hackathon_starter.urls'
 
